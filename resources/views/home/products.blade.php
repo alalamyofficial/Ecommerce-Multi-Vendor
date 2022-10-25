@@ -5,6 +5,7 @@
                 Our <span>products</span>
             </h2>
         </div>
+
         <div class="row">
         @foreach($products as $product)
             <div class="col-sm-6 col-md-4 col-lg-4">
@@ -58,7 +59,7 @@
 
         </div>
         <div class="btn-box">
-            <a href="">
+            <a href="{{route('products.all')}}">
             View All products
             </a>
         </div>

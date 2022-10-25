@@ -52,6 +52,30 @@
       <script src="{{asset('home/js/bootstrap.js')}}"></script>
       <!-- custom js -->
       <script src="{{asset('home/js/custom.js')}}"></script>
+
+      <script>
+            function reply(caller){
+               document.getElementById('commentId').value 
+                  = $(caller).attr('data-commentid');
+               $('.replyDiv').insertAfter($(caller));
+               $('.replyDiv').show();
+            }
+
+            function reply_close(caller){
+               $('.replyDiv').hide();
+            }
+      </script>
+
+      <script>
+            document.addEventListener("DOMContentLoaded", function(event) { 
+                  var scrollpos = localStorage.getItem('scrollpos');
+                  if (scrollpos) window.scrollTo(0, scrollpos);
+            });
+
+            window.onbeforeunload = function(e) {
+                  localStorage.setItem('scrollpos', window.scrollY);
+            };
+      </script>
   
    </body>
 </html>

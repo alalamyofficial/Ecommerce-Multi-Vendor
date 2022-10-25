@@ -19,3 +19,18 @@
 <!-- Custom js for this page -->
 <script src="{{asset('admin/assets/js/dashboard.js')}}"></script>
 <!-- End custom js for this page -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+
+<script>
+$(document).ready(function(){
+  $("#inputSearch").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>

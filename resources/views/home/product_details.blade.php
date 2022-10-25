@@ -81,6 +81,111 @@
                     </form>
                  </div>   
 
+                
+                <hr>
+
+                 <div class="mt-3 mb-4">
+                    <div>
+                        <strong class="mt-3 mb-4">Write a Comment</strong>
+                        <form action="{{route('comment.create')}}" method="POST">
+                            @csrf
+                            <textarea 
+                                name="comment" 
+                                id="" 
+                                cols="30" 
+                                rows="10"
+                                class="form-control mb-2"
+                            >
+                            </textarea>
+
+                            <input type="submit" class="" 
+                                    value="Comment"
+                                    style=" background-color: #4bdb4b;
+                                            color: white;
+                                            padding: 5px;
+                                            border-radius: 25px;
+                                            font-family: cursive;
+                                            text-align: center;
+                                        "
+                            >
+                        </form>
+                    </div>
+
+                </div>
+
+                <hr class="mt-3">
+
+                <div class="comments mt-3 mb-3">
+                    <h3 class="mb-3">All Comments</h3>
+
+                    @foreach($comments as $comment)
+
+                    <div class="main-comment p-3" style="border: 1px solid #877e7e;">
+                        <div class="d-flex">
+                            <b class="mr-3">{{$comment->name}}</b>
+                            <small class="mt-1">{{$comment->created_at->diffForHumans()}}</small>
+                        </div>
+                        <p>{{$comment->comment}}</p>
+                        <a  class="mb-2" 
+                            href="javascript::void(0)"
+                            onclick="reply(this)"
+                            data-commentid="{{$comment->id}}"
+                            style="color:blue"
+                        >
+                            Reply
+                        </a>
+                    </div>
+
+                        @foreach($replies as $reply)
+
+                            @if($reply->comment_id == $comment->id)
+                                <div class="reply ml-4 p-3 mt-2" style="
+                                            border: 1px solid #877e7e;
+                                            border-radius:10px">
+                                    <b>{{$reply->name}}</b>
+                                    <p>{{$reply->reply}}</p>
+                                    <a  class="mb-2" 
+                                        href="javascript::void(0)"
+                                        onclick="reply(this)"
+                                        data-commentid="{{$comment->id}}"
+                                        style="color:blue"
+                                    >
+                                        Reply
+                                    </a>
+                                </div>
+                            @endif    
+                        @endforeach
+
+                    <br>
+                    <div style="display:none" class="replyDiv">
+
+                        <form action="{{route('reply.create')}}" method="post">
+                            @csrf
+                            <input type="text" name="commentId" id="commentId" hidden="">
+                            <textarea name="reply"
+                                    cols="30" 
+                                    rows="3"
+                                    placeholder="Write Something"
+                            >
+                            </textarea>
+                            <br>
+                            <button class="btn btn-primary" 
+                                type="submit">
+                                Reply    
+                            </button>
+                            <a class="btn btn-primary" 
+                                type="submit" 
+                                href="javascript::void(0)"
+                                onclick="reply_close(this)"
+                            >
+                                X    
+                            </a>
+                        </form>
+                    </div>
+                    @endforeach
+
+                </div>
+
                 </div>
             </div>
         </div>

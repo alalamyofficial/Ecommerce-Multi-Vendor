@@ -11,21 +11,34 @@
                     <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <span class="nav-label">Pages <span class="caret"></span></a>
+                    <a class="nav-link dropdown-toggle" 
+                        href="#" data-toggle="dropdown" 
+                        role="button" 
+                        aria-haspopup="true" 
+                        aria-expanded="true"> 
+                        <span class="nav-label">Categories <span class="caret"></span>
+                    </a>
                     <ul class="dropdown-menu">
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="testimonial.html">Testimonial</a></li>
+                        @foreach($categories as $category)
+                            <li>
+                                <a href="{{route('category.product',$category->name)}}">
+                                    {{$category->name}}
+                                </a>
+                            </li>
+                        @endforeach
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="product.html">Products</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="blog_list.html">Blog</a>
+                    <a class="nav-link" href="{{route('products.all')}}">Products</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="contact.html">Contact</a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('order.show')}}">Orders</a>
+                </li>
+
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('cart.show')}}">
                         <div class="d-flex">
@@ -108,13 +121,25 @@
                     @endauth
                 @endif    
 
-                <form class="form-inline">
-                    <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit">
-                    <i class="fa fa-search" aria-hidden="true"></i>
-                    </button>
-                </form>
                 </ul>
             </div>
         </nav>
+
+        <div class="search form-inline" style="margin-left:500px;">
+            <div class="d-flex">
+                <form action="{{route('product.search')}}" method="get">
+                    <input  
+                            type="text" 
+                            name="search" 
+                            id="" 
+                            placeholder="Search..."
+                            class="form-control mt-3"
+                    >
+                    <button class="btn my-2 my-sm-0 nav_search-btn" type="submit">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                    </button>        
+                </form>
+            </div>
+        </div>
     </div>
     </header>

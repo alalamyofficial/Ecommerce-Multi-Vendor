@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use PDF;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Notification;
+use App\Notifications\SendEmailNotification;
 
 class AdminController extends Controller
 {
@@ -160,5 +164,79 @@ class AdminController extends Controller
         return redirect()
                 ->route('products')
                 ->with('message','Product Deleted Successfully');
+    }
+
+
+    //Orders--------------------------------------------------
+
+    public function orders(){
+
+        $orders = Order::latest()->get();
+        return view('admin.orders.index',compact('orders'));
+
+    }
+    
+    public function create_order(){
+        $categories = Category::latest()->get();
+        return view('admin.orders.create',compact('categories'));
+    }
+
+    public function single_order($id){
+        $order = Order::where('id',$id)->first();
+        return view('admin.orders.order',compact('order'));
+    }
+
+    public function delivered_order($id){
+
+        $order = Order::find($id);
+        $order->delivery_status = 'Delivered';
+        $order->payment_status = 'Paid';
+        $order->save();
+
+        return redirect()
+            ->back()
+            ->with('message','Product Updated Successfully');
+    }
+    
+    public function destroy_order($id){
+
+        $order = Order::find($id);
+        $order->delete();
+        return redirect()
+                ->route('orders')
+                ->with('message','Order Deleted Successfully');
+    }
+
+
+    public function print_pdf($id){
+
+        $order = Order::find($id);
+        $pdf = PDF::loadview('admin.orders.pdf',compact('order'));
+        return $pdf->download('order_details.pdf');
+    }
+
+    public function send_mail($id){
+        $order = Order::find($id);
+        return view('admin.orders.email_info',compact('order'));
+    }
+
+    public function send_user_email(Request $request,$id){
+        $order = Order::find($id);
+
+        $details = [
+            'greeting' => $request->greeting,
+            'firstline' => $request->firstline,
+            'body' => $request->body,
+            'button' => $request->button,
+            'url' => $request->url,
+            'lastline' => $request->lastline,
+        ];
+
+        Notification::send($order,new SendEmailNotification($details));
+
+        return redirect()
+            ->back()
+            ->with('message','Mail Send Successfully');
+
     }
 }

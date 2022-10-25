@@ -31,40 +31,74 @@ Route::middleware([
 
 Route::get('/',[HomeController::class,'index']);
 
-//site
 Route::get('/product/details/{title}',
         [HomeController::class,'product_details'])
         ->name('product_details');
 
-Route::post('/add/to/cart/{id}',
-        [HomeController::class,'add_to_cart'])
-        ->name('add_to_cart');   
 
-Route::get('/cart/show',
-        [HomeController::class,'cart_show'])
-        ->name('cart.show');   
+Route::get('all/products/',
+        [HomeController::class,'all_products'])
+        ->name('products.all');        
 
-Route::get('/remove/item/cart/{id}',
-        [HomeController::class,'remove_item_from_cart'])
-        ->name('remove.item.cart'); 
+Route::get('search/product/',
+        [HomeController::class,'search_product'])
+        ->name('product.search');
 
+Route::get('category/{name}/',
+        [HomeController::class,'category_product'])
+        ->name('category.product');
+
+Route::group(['middleware' => 'auth'], function (){
+        //site
         
-Route::get('/cash/order',
-        [HomeController::class,'cash_order'])
-        ->name('cash.order'); 
+        Route::post('/add/to/cart/{id}',
+                [HomeController::class,'add_to_cart'])
+                ->name('add_to_cart');   
+        
+        Route::get('/cart/show',
+                [HomeController::class,'cart_show'])
+                ->name('cart.show');   
+        
+        Route::get('/remove/item/cart/{id}',
+                [HomeController::class,'remove_item_from_cart'])
+                ->name('remove.item.cart'); 
+                
+        Route::get('/cash/order',
+                [HomeController::class,'cash_order'])
+                ->name('cash.order'); 
 
-Route::get('/stripe/{totalPrice}',
-        [HomeController::class,'stripe'])
-        ->name('stripe.order'); 
+        Route::get('/show/my/orders',
+                [HomeController::class,'show_order'])
+                ->name('order.show'); 
 
-Route::post('stripe/{totalPrice}', 
-        [HomeController::class,'stripePost'])
-        ->name('stripe.post');
+        Route::get('/cancel/order/{id}',
+                [HomeController::class,'cancel_order'])
+                ->name('order.cancel');        
+                
+        Route::get('/stripe/{totalPrice}',
+                [HomeController::class,'stripe'])
+                ->name('stripe.order'); 
+        
+        Route::post('stripe/{totalPrice}', 
+                [HomeController::class,'stripePost'])
+                ->name('stripe.post');
+
+        Route::post('/add/comment/',
+                [HomeController::class,'add_comment'])
+                ->name('comment.create');
+                
+        Route::post('/add/reply/',
+                [HomeController::class,'add_reply'])
+                ->name('reply.create');        
+
+});
+
         
         
 //Admin
 
-Route::get('/redirect',[HomeController::class,'redirect']);
+Route::get('/redirect',[HomeController::class,'redirect'])
+        ->middleware('auth','verified');
 
 //categories
 Route::get('categories',[AdminController::class,'categories'])
@@ -96,3 +130,26 @@ Route::patch('update/product/{id}',[AdminController::class,'update_product'])
 Route::get('product/{title}',[AdminController::class,'single_product'])
         ->name('single_product');        
 
+
+//orders
+Route::get('orders',[AdminController::class,'orders'])
+        ->name('orders');
+Route::get('create/order',[AdminController::class,'create_order'])
+        ->name('order.create');
+Route::post('create/order',[AdminController::class,'store_order'])
+        ->name('order.store');
+Route::get('delivered/order/{id}',[AdminController::class,'delivered_order'])
+        ->name('order.delivered');
+Route::get('delete/order/{id}',[AdminController::class,'destroy_order'])
+        ->name('order.delete');
+
+Route::get('order/{id}',[AdminController::class,'single_order'])
+        ->name('single_order');  
+
+Route::get('print/pdf/{id}',[AdminController::class,'print_pdf'])
+        ->name('print_pdf');  
+
+Route::get('send/mail/{id}',[AdminController::class,'send_mail'])
+        ->name('send_mail');        
+Route::post('send/user/email/{id}',[AdminController::class,'send_user_email'])
+        ->name('send_user_email');        

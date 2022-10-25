@@ -25,7 +25,7 @@
                             <th class="text text-white">Action</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="myTable">
                         @foreach($products as $product)
                         <tr>
                             <td>{{$product->title}}</td>

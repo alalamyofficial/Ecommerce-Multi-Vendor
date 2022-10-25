@@ -23,7 +23,7 @@
                             <th class="text text-white">Action</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="myTable">
                         @foreach($categories as $category)
                         <tr>
                             <td>{{$category->name}}</td>
