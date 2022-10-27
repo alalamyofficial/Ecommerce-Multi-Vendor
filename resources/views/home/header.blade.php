@@ -32,7 +32,9 @@
                     <a class="nav-link" href="{{route('products.all')}}">Products</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="contact.html">Contact</a>
+                    <a class="nav-link" href="{{route('contact.us')}}">
+                        Contact
+                    </a>
                 </li>
 
                 <li class="nav-item">

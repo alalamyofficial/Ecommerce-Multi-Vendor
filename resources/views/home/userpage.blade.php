@@ -20,6 +20,12 @@
       <link href="{{asset('home/css/style.css')}}" rel="stylesheet" />
       <!-- responsive style -->
       <link href="{{asset('home/css/responsive.css')}}" rel="stylesheet" />
+
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/fontawesome.min.css" integrity="sha512-RvQxwf+3zJuNwl4e0sZjQeX7kUa3o82bDETpgVCH2RiwYSZVDdFJ7N/woNigN/ldyOOoKw8584jM4plQdt8bhA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+      <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+
    </head>
    <body>
       <div class="hero_area">
@@ -38,10 +44,8 @@
 
         <!-- footer end -->
       <div class="cpy_">
-         <p class="mx-auto">© 2021 All Rights Reserved By <a href="https://html.design/">Free Html Templates</a><br>
-         
-            Distributed By <a href="https://themewagon.com/" target="_blank">ThemeWagon</a>
-         
+         <p class="mx-auto">© All Rights Reserved By
+             <a href="https://www.facebook.com/m7.alalamy/">Mohamed Alalamey</a><br>
          </p>
       </div>
       <!-- jQery -->

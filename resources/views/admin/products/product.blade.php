@@ -56,6 +56,10 @@
                   <div>{{$product->created_at->diffForHumans()}}</div>
                 </div>
 
+                <div class="d-flex mb-3">
+                  <b class="badge badge-danger mr-2">By : </b>  
+                  <div>{{$product->user->name}}</div>
+                </div>
 
 
                 </div>

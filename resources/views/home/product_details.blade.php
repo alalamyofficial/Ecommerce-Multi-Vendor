@@ -62,10 +62,24 @@
 
 
                 <div class="d-flex mb-3">
-                  <b class="badge badge-danger mr-2">Published : </b>  
-                  <div>{{$product->created_at->diffForHumans()}}</div>
+                  <b class="badge badge-danger mr-2 mt-1 p-2"> <i class="fa fa-clock-o"></i> </b>  
+                  <div class="mt-1">{{$product->created_at->diffForHumans()}}</div>
                 </div>
 
+
+                <div class="d-flex mb-3">
+                  <b class="badge badge-danger mr-2">By : </b>  
+                  <div>
+                    @if($product->user->userType == 1)
+                        <b><i>
+                            Famms <i class='fas fa-check'></i> <br>
+                            <small>Free Shipping</small>
+                        </i></b>
+                    @else
+                        <b><i>{{$product->user->name}}</i></b>
+                    @endif
+                  </div>
+                </div>
 
                  <div class="mt-5">  
                     <form action="{{route('add_to_cart',$product->id)}}" method="post">
@@ -118,40 +132,69 @@
                 <div class="comments mt-3 mb-3">
                     <h3 class="mb-3">All Comments</h3>
 
-                    @foreach($comments as $comment)
+                    @forelse($comments as $comment)
 
-                    <div class="main-comment p-3" style="border: 1px solid #877e7e;">
-                        <div class="d-flex">
-                            <b class="mr-3">{{$comment->name}}</b>
-                            <small class="mt-1">{{$comment->created_at->diffForHumans()}}</small>
+                    <div class="d-flex" style="border: 1px solid #877e7e;">
+                        <div class="main-comment p-2" >
+                            <div class="d-flex">
+                                <b class="mr-3">{{$comment->name}}</b>
+                                <small class="mt-1">
+                                    <i class='fas fa-clock mr-1'>
+                                    </i>{{$comment->created_at->diffForHumans()}}
+                                </small>
+                            </div>
+                            <p>{{$comment->comment}}</p>
+                            <a  class="mb-2" 
+                                href="javascript::void(0)"
+                                onclick="reply(this)"
+                                data-commentid="{{$comment->id}}"
+                                style="color:blue"
+                            >
+                                Reply
+                            </a>
                         </div>
-                        <p>{{$comment->comment}}</p>
-                        <a  class="mb-2" 
-                            href="javascript::void(0)"
-                            onclick="reply(this)"
-                            data-commentid="{{$comment->id}}"
-                            style="color:blue"
-                        >
-                            Reply
-                        </a>
+                        @if(Auth::user()->id == $comment->user_id)
+                        <div class="close mt-2">
+                            <a href="{{route('comment.remove',$comment->id)}}" 
+                                class="" style="color:red">
+                                x
+                            </a>
+                        </div>
+                        @endif
                     </div>
 
                         @foreach($replies as $reply)
 
                             @if($reply->comment_id == $comment->id)
-                                <div class="reply ml-4 p-3 mt-2" style="
-                                            border: 1px solid #877e7e;
-                                            border-radius:10px">
-                                    <b>{{$reply->name}}</b>
-                                    <p>{{$reply->reply}}</p>
-                                    <a  class="mb-2" 
-                                        href="javascript::void(0)"
-                                        onclick="reply(this)"
-                                        data-commentid="{{$comment->id}}"
-                                        style="color:blue"
-                                    >
-                                        Reply
-                                    </a>
+                                <div class="d-flex ml-4 p-2 mt-2" style="
+                                                border: 1px solid #877e7e;
+                                                border-radius:10px">
+                                    <div class="reply">
+                                        <div class="d-flex">
+                                            <b class="mr-3">{{$reply->name}}</b>
+                                            <small class="mt-1">
+                                                <i class='fas fa-clock mr-1'>
+                                                </i>{{$reply->created_at->diffForHumans()}}
+                                            </small>
+                                        </div>
+                                        <p>{{$reply->reply}}</p>
+                                        <a  class="mb-2" 
+                                            href="javascript::void(0)"
+                                            onclick="reply(this)"
+                                            data-commentid="{{$comment->id}}"
+                                            style="color:blue"
+                                        >
+                                            Reply
+                                        </a>
+                                        
+                                    </div>
+                                    @if(Auth::user()->id == $reply->user_id)
+                                        <div class="close ml-2">
+                                            <a href="{{route('reply.remove',$reply->id)}}" 
+                                                class="" style="color:red">x</a>
+                                        </div>
+                                    @endif    
+
                                 </div>
                             @endif    
                         @endforeach
@@ -169,11 +212,28 @@
                             >
                             </textarea>
                             <br>
-                            <button class="btn btn-primary" 
+                            <button style="   
+                                border: 1px solid #9b9797;
+                                padding: 7px;
+                                background-color: #dedef7;
+                                border-radius: 15px;
+                                font-family: arial;
+                                font-size: 15px;
+                                width: 90px;
+                            " 
                                 type="submit">
                                 Reply    
                             </button>
-                            <a class="btn btn-primary" 
+                            <a style="   
+                                border: 1px solid #9b9797;
+                                padding: 7px;
+                                background-color: black;
+                                color:white;
+                                border-radius: 15px;
+                                font-family: arial;
+                                font-size: 15px;
+                                width: 28px;
+                            "  
                                 type="submit" 
                                 href="javascript::void(0)"
                                 onclick="reply_close(this)"
@@ -182,7 +242,9 @@
                             </a>
                         </form>
                     </div>
-                    @endforeach
+                    @empty
+                        <center>No Comment Found</center>
+                    @endforelse
 
                 </div>
 

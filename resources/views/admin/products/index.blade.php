@@ -2,7 +2,8 @@
 @section('body')
 
 <div class="main-panel">
-    <div class="content-wrapper">  
+    <div class="content-wrapper">
+    @if(count($products)>0)  
         @include('admin.flash_message')
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
@@ -60,6 +61,9 @@
                 </div>
             </div>
         </div>
+    @else
+        <center>No Products Found</center>
+    @endif        
     </div>
 </div>
 

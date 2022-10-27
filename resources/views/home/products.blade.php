@@ -36,23 +36,36 @@
                     <div class="img-box">
                     <img src="{{asset($product->image)}}" alt="">
                     </div>
-                    <div class="detail-box">
-                    <h5>
-                        {{$product->title}}
-                    </h5>
-                    @if($product->discount_price != null)
-                        <h6 style="color:red">
-                            $ {{$product->discount_price}}
-                        </h6>
-                        <h6 style="text-decoration: line-through;">
-                            $ {{$product->price}}
-                        </h6>
-                    @else    
-                        <h6 style="color:red">
-                            $ {{$product->price}}
-                        </h6>
-                    @endif
+                    <div class="detail-box mb-3">
+                        <h5>
+                            {{$product->title}}
+                        </h5>
+                        @if($product->discount_price != null)
+                            <h6 style="color:red">
+                                $ {{$product->discount_price}}
+                            </h6>
+                            <h6 style="text-decoration: line-through;">
+                                $ {{$product->price}}
+                            </h6>
+                        @else    
+                            <h6 style="color:red">
+                                $ {{$product->price}}
+                            </h6>
+                        @endif
                     </div>
+                    By  
+                    @if($product->user->userType == 1)
+                        <b><i>
+                            Famms <i class='fas fa-check'></i><br>
+                            <small>Free Shipping</small> 
+                        </i></b>
+                    @elseif($product->user->userType == 2)
+                    
+                        <b><i>{{$product->user->name}}</i></b>
+
+                    @else
+                        <b><i>{{$product->user->name}}</i></b>
+                    @endif    
                 </div>
             </div>
         @endforeach    

@@ -4,6 +4,7 @@
 <div class="container mt-3 mb-3">
     <div class="row jusify-content-center">
 
+        @if(count($orders) > 0)
         <div class="table-responsive">
             <table class="table">
             <thead>
@@ -53,6 +54,9 @@
             </tbody>
             </table>
         </div>
+        @else
+            <center style="text-align:center"><b>No Orders Found</b></center>
+        @endif    
 
     </div>
 </div>

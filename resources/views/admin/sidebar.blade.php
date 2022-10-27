@@ -14,7 +14,15 @@
             <div class="profile-name">
                 <div class="d-flex">
                     <h5 class="mb-0 font-weight-normal">{{Auth::user()->name}}</h5>
-                    <span class="ml-3 mt-1">(Admin)</span>
+                    <span class="ml-3 mt-1">
+                        @if(Auth::user()->userType == 1)
+                            <b>(Admin)</b>
+                        @elseif(Auth::user()->userType == 2)
+                            <b>(Seller)</b> 
+                        @else
+                            <b>Customer</b>
+                        @endif 
+                    </span>
                 </div>
             </div>
             </div>
@@ -64,7 +72,7 @@
         </li>
 
 
-
+        @if(Auth::user()->userType == 1)
         <li class="nav-item menu-items">
             <a class="nav-link" data-bs-toggle="collapse" 
                 href="#category" aria-expanded="false" 
@@ -95,7 +103,7 @@
                 </ul>
             </div>
         </li>
-
+        @endif
 
 
         <li class="nav-item menu-items">
@@ -129,18 +137,19 @@
             </div>
         </li>
 
-
+        @if(Auth::user()->userType == 1)
         <li class="nav-item menu-items">
-            <a class="nav-link" href="pages/tables/basic-table.html">
+            <a class="nav-link" href="{{route('users')}}">
                 <span class="menu-icon">
                 <i class="mdi mdi-account-multiple"></i>
                 </span>
                 <span class="menu-title">Users</span>
             </a>
         </li>
+        @endif
 
         <li class="nav-item menu-items">
-            <a class="nav-link" href="pages/tables/basic-table.html">
+            <a class="nav-link" href="{{route('comments')}}">
                 <span class="menu-icon">
                 <i class="mdi mdi-comment"></i>
                 </span>
@@ -148,23 +157,27 @@
             </a>
         </li>
 
+        @if(Auth::user()->userType == 1)
         <li class="nav-item menu-items">
-            <a class="nav-link" href="pages/tables/basic-table.html">
+            <a class="nav-link" href="{{route('carts')}}">
                 <span class="menu-icon">
                 <i class="mdi mdi-cart"></i>
                 </span>
                 <span class="menu-title">Cart</span>
             </a>
         </li>
+        @endif
 
+        @if(Auth::user()->userType == 1)
         <li class="nav-item menu-items">
-            <a class="nav-link" href="pages/tables/basic-table.html">
+            <a class="nav-link" href="{{route('mails')}}">
                 <span class="menu-icon">
-                <i class="mdi mdi-email"></i>
+                    <i class="mdi mdi-email"></i>
                 </span>
                 <span class="menu-title">Mails</span>
             </a>
         </li>
+        @endif
 
     </ul>
 </nav>

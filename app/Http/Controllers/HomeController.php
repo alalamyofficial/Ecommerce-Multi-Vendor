@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Stripe;
 use Session;
 use App\Models\Cart;
+use App\Models\Mail;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Reply;
@@ -29,30 +30,59 @@ class HomeController extends Controller
 
         $userType = Auth::user()->userType;
 
-        $products = Product::all();
-        $orders = Order::all();
-        $users = User::all();
-        $categories = Category::latest()->get();
+        if($userType == 1){
+            
+            $products = Product::all();
+            $orders = Order::all();
+            $users = User::all();
+            $categories = Category::latest()->get();
+            $comments = Comment::latest()->get();
+            $mails = Mail::latest()->get();
+    
+            $totalrevenue = 0;
+    
+            foreach($orders as $order){
+                $totalrevenue = $totalrevenue + $order->price;
+            }
+    
+            $total_delivered_order = Order::where('delivery_status','Delivered')->get();
+            $total_processing_order = Order::where('delivery_status','Processing')->get();
+            $total_processing_canceled = Order::where('delivery_status','You Canceled That Order')
+                                        ->get();
 
-        $totalrevenue = 0;
-
-        foreach($orders as $order){
-            $totalrevenue = $totalrevenue + $order->price;
-        }
-
-        $total_delivered_order = Order::where('delivery_status','Delivered')->get();
-        $total_processing_order = Order::where('delivery_status','Processing')->get();
-
-        if($userType == '1'){
             return view('admin.dashboard',
                 compact('products','orders','users',
                         'totalrevenue','total_delivered_order',
-                        'total_processing_order'));
+                        'total_processing_order','total_processing_canceled',
+                        'comments','mails'));                            
+        }elseif($userType == 2){
+
+            $products = Product::where('user_id',Auth::id())->get();
+            $product = Product::where('user_id',Auth::id())->first();
+            $orders = Order::where('product_id',$product->id)->get();
+    
+            $totalrevenue = 0;
+    
+            foreach($orders as $order){
+                $totalrevenue = $totalrevenue + $order->price;
+            }
+    
+            $total_delivered_order = Order::where('delivery_status','Delivered')
+                                            ->where('product_id',$product->id)->get();
+            $total_processing_order = Order::where('delivery_status','Processing')
+                                            ->where('product_id',$product->id)->get();
+            $total_processing_canceled = Order::where('delivery_status','You Canceled That Order')
+                                            ->where('product_id',$product->id)->get();
+
+            return view('admin.dashboard',
+                compact('products','orders',
+                        'totalrevenue','total_delivered_order',
+                        'total_processing_order','total_processing_canceled'));
+
         }else{
-            $products = Product::latest()->paginate(6);
-            $cart_details = Cart::where('user_id',Auth::id())->get();
-            return view('home.site_body',compact('products','cart_details','categories'));
+            abort(404);
         }
+
 
     }
 
@@ -60,7 +90,8 @@ class HomeController extends Controller
         
         $product = Product::where('title',$title)->first();
         $cart_details = Cart::where('user_id',Auth::id())->get();
-        $comments = Comment::orderBy('id','desc')->get();
+        $comments = Comment::where('product_id',$product->id)
+                            ->orderBy('id','desc')->get();
         $replies = Reply::orderBy('id','desc')->get();
         $categories = Category::latest()->get();
 
@@ -276,11 +307,14 @@ class HomeController extends Controller
 
     public function add_comment(Request $request){
 
+        $product_id = Product::first()->id;
+
         if(Auth::id()){
 
             $comment = new Comment;
             $comment->name = Auth::user()->name;
             $comment->user_id = Auth::user()->id;
+            $comment->product_id = $product_id;
             $comment->comment = $request->comment;
             $comment->save();
 
@@ -288,6 +322,31 @@ class HomeController extends Controller
                 redirect()
                     ->back()
                         ->with('success','Comment Added Successfully');
+
+        }else{
+            return redirect('login');
+        }
+
+    }
+
+    public function remove_comment($id){
+
+        if(Auth::id()){
+
+            $comment = Comment::find($id);
+
+            if(Auth::id() == $comment->user_id){
+                $comment->delete();
+            }else{
+                return 
+                    redirect()
+                        ->back()
+                            ->with('error','Not Allowed');;
+            }
+            return 
+                redirect()
+                    ->back()
+                        ->with('success','Comment Removed Successfully');
 
         }else{
             return redirect('login');
@@ -310,6 +369,31 @@ class HomeController extends Controller
                 redirect()
                     ->back()
                         ->with('success','Reply Added Successfully');
+
+        }else{
+            return redirect('login');
+        }
+
+    }
+
+    public function remove_remove($id){
+
+        if(Auth::id()){
+
+            $reply = Reply::find($id);
+
+            if(Auth::id() == $reply->user_id){
+                $reply->delete();
+            }else{
+                return 
+                    redirect()
+                        ->back()
+                            ->with('error','Not Allowed');;
+            }
+            return 
+                redirect()
+                    ->back()
+                        ->with('success','reply Removed Successfully');
 
         }else{
             return redirect('login');
@@ -362,6 +446,29 @@ class HomeController extends Controller
 
         return view('home.all_products',compact('products','categories','cart_details'));
 
+    }
 
+    public function contact_us(){
+
+        $user = Auth::user();
+        $categories = Category::latest()->get();
+        $cart_details = Cart::where('user_id',$user->id)->get();
+
+        return view('home.contact_us',compact('categories','cart_details'));
+    }
+
+    public function send_email(Request $request){
+
+        $mail = new Mail;
+        $mail->name = $request->name;
+        $mail->email = $request->email;
+        $mail->subject = $request->subject;
+        $mail->bio = $request->body;
+
+        $mail->save();
+        return 
+            redirect()
+                ->back()
+                    ->with('success','Mail Was Sent Successfully');
     }
 }

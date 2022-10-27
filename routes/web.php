@@ -48,6 +48,14 @@ Route::get('category/{name}/',
         [HomeController::class,'category_product'])
         ->name('category.product');
 
+Route::get('contact/us/',
+        [HomeController::class,'contact_us'])
+        ->name('contact.us');
+
+Route::post('send/email/',
+        [HomeController::class,'send_email'])
+        ->name('send_email');
+
 Route::group(['middleware' => 'auth'], function (){
         //site
         
@@ -86,10 +94,18 @@ Route::group(['middleware' => 'auth'], function (){
         Route::post('/add/comment/',
                 [HomeController::class,'add_comment'])
                 ->name('comment.create');
-                
+
+        Route::get('/remove/comment/{id}',
+                [HomeController::class,'remove_comment'])
+                ->name('comment.remove');        
+
         Route::post('/add/reply/',
                 [HomeController::class,'add_reply'])
-                ->name('reply.create');        
+                ->name('reply.create');  
+                
+        Route::get('/remove/reply/{id}',
+                [HomeController::class,'remove_reply'])
+                ->name('reply.remove');  
 
 });
 
@@ -134,8 +150,6 @@ Route::get('product/{title}',[AdminController::class,'single_product'])
 //orders
 Route::get('orders',[AdminController::class,'orders'])
         ->name('orders');
-Route::get('create/order',[AdminController::class,'create_order'])
-        ->name('order.create');
 Route::post('create/order',[AdminController::class,'store_order'])
         ->name('order.store');
 Route::get('delivered/order/{id}',[AdminController::class,'delivered_order'])
@@ -153,3 +167,44 @@ Route::get('send/mail/{id}',[AdminController::class,'send_mail'])
         ->name('send_mail');        
 Route::post('send/user/email/{id}',[AdminController::class,'send_user_email'])
         ->name('send_user_email');        
+
+
+//mails        
+Route::get('mails',[AdminController::class,'mails'])
+        ->name('mails');
+
+Route::get('show/mail/{id}',[AdminController::class,'show_mail'])
+        ->name('mail.show');
+
+Route::get('delete/mail/{id}',[AdminController::class,'destroy_mail'])
+        ->name('mail.delete');
+
+//comments        
+Route::get('comments',[AdminController::class,'comments'])
+        ->name('comments');
+        
+Route::get('delete/comment/{id}',[AdminController::class,'destroy_comment'])
+        ->name('comment.delete');   
+        
+        
+
+//users        
+Route::get('users',[AdminController::class,'users'])
+        ->name('users');
+
+Route::get('show/user/{id}',[AdminController::class,'show_user'])
+        ->name('user.show');
+
+Route::get('delete/user/{id}',[AdminController::class,'destroy_user'])
+        ->name('user.delete');
+
+
+//carts        
+Route::get('carts',[AdminController::class,'carts'])
+        ->name('carts');
+
+Route::get('show/cart/{id}',[AdminController::class,'show_cart'])
+        ->name('carts.show');
+
+Route::get('delete/cart/{id}',[AdminController::class,'destroy_cart'])
+        ->name('cart.delete');        

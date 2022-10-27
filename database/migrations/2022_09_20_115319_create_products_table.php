@@ -21,6 +21,7 @@ class CreateProductsTable extends Migration
             $table->string('category')->nullable();
             $table->integer('quantity')->nullable();
             $table->float('price')->nullable();
+            $table->integer('user_id')->nullable();
             $table->float('discount_price')->nullable();
             $table->timestamps();
         });

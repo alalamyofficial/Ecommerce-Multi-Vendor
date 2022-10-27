@@ -5,6 +5,7 @@
                 Customer's Testimonial
             </h2>
         </div>
+
         <div id="carouselExample3Controls" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
@@ -12,7 +13,7 @@
                     <div class="img_container">
                         <div class="img-box">
                             <div class="img_box-inner">
-                                <img src="images/client.jpg" alt="">
+                                <img src="https://picsum.photos/200/300" alt="">
                             </div>
                         </div>
                     </div>
@@ -34,13 +35,13 @@
                     <div class="img_container">
                         <div class="img-box">
                             <div class="img_box-inner">
-                                <img src="images/client.jpg" alt="">
+                                <img src="https://picsum.photos/300" alt="">
                             </div>
                         </div>
                     </div>
                     <div class="detail-box">
                         <h5>
-                            Anna Trevor
+                            Anna Sam
                         </h5>
                         <h6>
                             Customer
@@ -56,13 +57,13 @@
                     <div class="img_container">
                         <div class="img-box">
                             <div class="img_box-inner">
-                                <img src="images/client.jpg" alt="">
+                                <img src="https://picsum.photos/200/" alt="">
                             </div>
                         </div>
                     </div>
                     <div class="detail-box">
                         <h5>
-                            Anna Trevor
+                            Anna Rambo
                         </h5>
                         <h6>
                             Customer
