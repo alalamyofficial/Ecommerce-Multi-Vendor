@@ -49,6 +49,11 @@ class AdminController extends Controller
 
     public function store_category(Request $request){
 
+        $this->validate($request,[
+
+            'name'=>'required'
+        ]);
+
         $category = new Category;
         $category->name = $request->name;
         $category->save();
@@ -73,6 +78,11 @@ class AdminController extends Controller
     }
 
     public function update_category(Request $request , $id){
+
+        $this->validate($request,[
+
+            'name'=>'required'
+        ]);
 
         $category = Category::find($id);
 
@@ -147,6 +157,18 @@ class AdminController extends Controller
     }
 
     public function store_product(Request $request){
+
+        $this->validate($request,[
+            'title'=>'required|min:3|max:255',
+            'description'=>'required|min=20|max:3000',
+            'price'=>'required|numeric|max:100',
+            'quantity'=>'required|numeric|max:300',
+            'category'=>'required',
+            'discount_price'=>'required|numeric|max:300',
+            'avatar' => 
+                ['image','sometimes','mimes:jpg,png,jpeg,gif','max:2048']
+
+        ]);
 
         $product = new Product;
         $product->title = $request->title;
@@ -233,6 +255,18 @@ class AdminController extends Controller
     }
 
     public function update_product(Request $request , $id){
+
+        $this->validate($request,[
+            'title'=>'required|min:3|max:255',
+            'description'=>'required|min=20|max:3000',
+            'price'=>'required|numeric|max:100',
+            'quantity'=>'required|numeric|max:300',
+            'category'=>'required',
+            'discount_price'=>'required|numeric|max:300',
+            'avatar' => 
+                ['image','sometimes','mimes:jpg,png,jpeg,gif','max:2048']
+
+        ]);
 
         $product = Product::find($id);
 
@@ -417,6 +451,16 @@ class AdminController extends Controller
     }
 
     public function send_user_email(Request $request,$id){
+        
+        $this->validate($request,[
+            'greeting'=>'required',
+            'firstline'=>'required',
+            'body'=>'required',
+            'button'=>'required',
+            'url'=>'required',
+            'lastline'=>'required',            
+        ]);
+        
         $order = Order::find($id);
 
         $details = [

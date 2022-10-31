@@ -10,7 +10,7 @@
                     <i class="mdi mdi-sort-variant"></i>
                 </div>
             </label>
-            <form action="{{url('create/category')}}" method="post">
+            <form action="{{url('store/category')}}" method="post">
                 @csrf
                 <input type="text" 
                     name="name" 

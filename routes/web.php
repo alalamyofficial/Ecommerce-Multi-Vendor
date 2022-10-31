@@ -121,7 +121,7 @@ Route::get('categories',[AdminController::class,'categories'])
         ->name('categories');
 Route::get('create/category',[AdminController::class,'create_category'])
         ->name('category.create');
-Route::post('create/category',[AdminController::class,'store_category'])
+Route::post('store/category',[AdminController::class,'store_category'])
         ->name('category.store');
 Route::get('edit/category/{id}',[AdminController::class,'edit_category'])
         ->name('category.edit');
