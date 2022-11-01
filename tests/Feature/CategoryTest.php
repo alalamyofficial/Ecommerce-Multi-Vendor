@@ -36,10 +36,10 @@ class CategoryTest extends TestCase
         $user = User::factory()->create()->make(['userType'=>false]);
 
         $response = $this->actingAs($user)
-        ->json('POST','store/category',['name' => 'Sally']);
+        ->json('POST','store/category',['name' => 'Salty Food']);
  
-        $response
-            ->assertStatus(200);
+        $response->assertStatus(200);
+        $response->assertRedirect('/categories');
 
     }
 
@@ -52,5 +52,6 @@ class CategoryTest extends TestCase
         $response = $this->actingAs($user)
                     ->get('/delete/category/'.$category->id);
         $response->assertStatus(200);
+        $response->assertRedirect('/categories');    
     }
 }
